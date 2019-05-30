@@ -6,10 +6,9 @@ const forecast = (latitude, longitude, callback) => {
     latitude +
     ',' +
     longitude +
-    '?exclude=minutely,hourly,daily,alerts,flags';
-  // "'";
+    '?exclude=minutely,hourly,alerts,flags';
 
-  request({ url, json: true }, (error, { body }) => {
+  request({ url, json: true }, (error, { body } = {}) => {
     if (error) {
       return callback('Unable to connect to weather service.', undefined);
     }
@@ -23,20 +22,22 @@ const forecast = (latitude, longitude, callback) => {
 
     callback(
       undefined,
-      'The current weather condition is "' +
+      body.daily.data[0].summary +
+        '  The current weather condition is "' +
         body.currently.summary +
-        '".  It is  ' +
+        '".  It is currently ' +
         body.currently.temperature +
-        ' degrees out.  And there is a ' +
-        body.currently.precipProbability +
-        '% chance of rain.'
+        ' degrees.  Today the high temperature will be ' +
+        body.daily.data[0].temperatureHigh +
+        ' and the low will be ' +
+        body.daily.data[0].temperatureLow +
+        '.  For the area there is a ' +
+        body.daily.data[0].precipProbability +
+        '% chance of ' +
+        body.daily.data[0].precipType +
+        ' today.'
     );
   });
 };
-
-// forecast(40.73, -73.99, (error, data) => {
-//   console.log('Error', error);
-//   console.log('Data', data);
-// });
 
 module.exports = forecast;
