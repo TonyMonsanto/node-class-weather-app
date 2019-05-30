@@ -20,6 +20,8 @@ const forecast = (latitude, longitude, callback) => {
       );
     }
 
+    const precipPercentage = body.daily.data[0].precipProbability * 100;
+
     callback(
       undefined,
       body.daily.data[0].summary +
@@ -31,8 +33,8 @@ const forecast = (latitude, longitude, callback) => {
         body.daily.data[0].temperatureHigh +
         ' and the low will be ' +
         body.daily.data[0].temperatureLow +
-        '.  For the area there is a ' +
-        body.daily.data[0].precipProbability +
+        '.  There is a ' +
+        precipPercentage +
         '% chance of ' +
         body.daily.data[0].precipType +
         ' today.'
